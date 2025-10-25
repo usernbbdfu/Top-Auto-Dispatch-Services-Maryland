@@ -1746,8 +1746,23 @@
         // For modal form
         function modalFormThankYou(event) {
             event.preventDefault();
-            showThankYouModal();
-            setTimeout(closeServiceModal, 500); // Close modal after thank you
+            var form = event.target;
+            var data = new FormData(form);
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        form.reset();
+                        showThankYouModal();
+                        setTimeout(closeServiceModal, 500);
+                    } else {
+                        alert('Sorry, there was an error submitting your request. Please try again.');
+                    }
+                }
+            };
+            xhr.send(data);
         }
 
         // Initialize everything when page loads
