@@ -1213,7 +1213,7 @@
                         </div>
                         <div class="form-group">
                             <label for="serviceType">Service Needed *</label>
-                            <select id="serviceType" name="serviceType" required>
+                            <select id="serviceType" name="serviceType" required onchange="updateSubServices()">
                                 <option value="">Select Service</option>
                                 <option value="Vehicle Access Assistance">🚗 Vehicle Access Assistance</option>
                                 <option value="Ignition Support">🔧 Ignition Support</option>
@@ -1225,6 +1225,12 @@
                                 <option value="Key Programming">🔐 Key Programming</option>
                                 <option value="Round-the-Clock Service">🕐 Round-the-Clock Service</option>
                                 <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="subServiceGroup" style="display:none;">
+                            <label for="subServiceType">Sub-Service</label>
+                            <select id="subServiceType" name="subServiceType">
+                                <option value="">Select Sub-Service</option>
                             </select>
                         </div>
                     </div>
@@ -1664,6 +1670,81 @@
     </div>
 
     <script>
+        // Sub-services for each main service
+        const subServicesMap = {
+            'Vehicle Access Assistance': [
+                'Car Lockout',
+                'Trunk Unlock',
+                'Commercial Vehicle Access',
+                'Emergency Lockout',
+                'Luxury/High-Security Vehicle Access'
+            ],
+            'Ignition Support': [
+                'Ignition Repair',
+                'Ignition Replacement',
+                'Ignition Key Extraction',
+                'Ignition Switch Troubleshooting'
+            ],
+            'Key Replacement': [
+                'Standard Key Replacement',
+                'Transponder Key Replacement',
+                'Key Fob Replacement',
+                'Laser Cut Key',
+                'Remote Head Key'
+            ],
+            'Broken Key Removal': [
+                'Key Extraction from Door',
+                'Key Extraction from Ignition',
+                'Key Extraction from Trunk'
+            ],
+            'Battery Boost & Replacement': [
+                'Jump Start',
+                'Battery Replacement',
+                'Battery Terminal Cleaning'
+            ],
+            'Fuel Drop-Off': [
+                'Gasoline Delivery',
+                'Diesel Delivery',
+                'Wrong Fuel Assistance'
+            ],
+            'Roadside Tire Change': [
+                'Flat Tire Change',
+                'Spare Tire Installation',
+                'Lug Nut Assistance'
+            ],
+            'Key Programming': [
+                'Transponder Programming',
+                'Remote Programming',
+                'Key Fob Programming',
+                'Smart Key Programming'
+            ],
+            'Round-the-Clock Service': [
+                'Emergency Response',
+                'After Hours Service',
+                'Holiday Service'
+            ],
+            'Other': [
+                'Custom Request',
+                'Not Listed'
+            ]
+        };
+
+        function updateSubServices() {
+            var serviceSelect = document.getElementById('serviceType');
+            var subServiceGroup = document.getElementById('subServiceGroup');
+            var subServiceSelect = document.getElementById('subServiceType');
+            var selectedService = serviceSelect.value;
+            if (subServicesMap[selectedService]) {
+                subServiceSelect.innerHTML = '<option value="">Select Sub-Service</option>' +
+                    subServicesMap[selectedService].map(function(sub) {
+                        return '<option value="' + sub + '">' + sub + '</option>';
+                    }).join('');
+                subServiceGroup.style.display = '';
+            } else {
+                subServiceSelect.innerHTML = '<option value="">Select Sub-Service</option>';
+                subServiceGroup.style.display = 'none';
+            }
+        }
         // Populate vehicle years
         function populateYears() {
             const yearSelect = document.getElementById('vehicleYear');
