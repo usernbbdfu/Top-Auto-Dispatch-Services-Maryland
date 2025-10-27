@@ -1141,7 +1141,7 @@
                                                         To receive form submissions on GitHub Pages, we use Formspree.
                                                         Submissions will be delivered to vahidtabot4407@gmail.com.
                                                     -->
-                                                    <form id="serviceForm" class="service-form" method="POST" action="https://formspree.io/f/xoqgqvbp">
+                                                    <form id="serviceForm" class="service-form" method="POST" action="https://formspree.io/f/manlwrkj">
                     <input type="hidden" name="_subject" value="New Service Request from Website">
                     <div class="form-row">
                         <div class="form-group">
@@ -1567,14 +1567,13 @@
                     <h4>Quick Service Request</h4>
                     <p>Service and basic details are pre-filled. Just add your information!</p>
                 </div>
-                
-                <form id="modalServiceForm" onsubmit="handleModalFormSubmit(event)">
-                                        <!--
-                                                                    To receive modal form submissions on GitHub Pages, we use Formspree.
-                                                                    Submissions will be delivered to vahidtabot4407@gmail.com.
-                                                                -->
-                                                                <form id="modalServiceForm" method="POST" action="https://formspree.io/f/xoqgqvbp" onsubmit="modalFormThankYou(event)">
-                                        <input type="hidden" name="_subject" value="New Modal Service Request from Website">
+                <!--
+                    To receive modal form submissions on GitHub Pages, we use Formspree.
+                    Submissions will be delivered to vahidtabot4407@gmail.com.
+                    NOTE: removed nested <form> tags and consolidated into a single form element.
+                -->
+                <form id="modalServiceForm" method="POST" action="https://formspree.io/f/manlwrkj" onsubmit="modalFormThankYou(event)">
+                    <input type="hidden" name="_subject" value="New Modal Service Request from Website">
                                         <div class="modal-form-group">
                         <label for="modalCustomerName">Full Name *</label>
                         <input type="text" id="modalCustomerName" name="customerName" required>
@@ -1753,11 +1752,14 @@
             xhr.setRequestHeader('Accept', 'application/json');
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
+                    console.log('modalFormThankYou: xhr.status=', xhr.status, 'responseText=', xhr.responseText);
                     if (xhr.status === 200) {
+                        console.log('modalFormThankYou: submission successful');
                         form.reset();
                         showThankYouModal();
                         setTimeout(closeServiceModal, 500);
                     } else {
+                        console.error('modalFormThankYou: submission failed', xhr.status, xhr.responseText);
                         alert('Sorry, there was an error submitting your request. Please try again.');
                     }
                 }
@@ -1783,10 +1785,13 @@
                     xhr.setRequestHeader('Accept', 'application/json');
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4) {
+                            console.log('mainForm submit: xhr.status=', xhr.status, 'responseText=', xhr.responseText);
                             if (xhr.status === 200) {
+                                console.log('mainForm submit: success');
                                 form.reset();
                                 showThankYouModal();
                             } else {
+                                console.error('mainForm submit: failed', xhr.status, xhr.responseText);
                                 alert('Sorry, there was an error submitting your request. Please try again.');
                             }
                         }
