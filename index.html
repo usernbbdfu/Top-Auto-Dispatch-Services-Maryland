@@ -959,6 +959,12 @@
             <div style="font-size:3rem; color:#38a169; margin-bottom:15px;">✅</div>
             <h2 style="color:#1a202c; font-size:2rem; margin-bottom:10px;">Thank You!</h2>
             <p style="color:#4a5568; font-size:1.1rem; margin-bottom:20px;">Your service request has been submitted.<br>We will contact you within 5 minutes during business hours.</p>
+            <div style="margin-bottom:20px;">
+                <span style="color:#1a202c; font-weight:600;">Submitted Phone:</span>
+                <span id="submittedPhoneDisplay" style="color:#4299e1; font-weight:700; font-size:1.1rem; margin-left:8px;"></span>
+            </div>
+            <a id="callSubmittedPhoneBtn" href="#" style="display:inline-block; background:#38a169; color:white; border:none; padding:12px 30px; border-radius:8px; font-weight:600; font-size:1rem; cursor:pointer; text-decoration:none; margin-bottom:10px;">Call This Number</a>
+            <br>
             <button onclick="closeThankYouModal()" style="background:#4299e1; color:white; border:none; padding:12px 30px; border-radius:8px; font-weight:600; font-size:1rem; cursor:pointer;">Close</button>
         </div>
     </div>
@@ -1780,6 +1786,7 @@
                     e.preventDefault();
                     var form = e.target;
                     var data = new FormData(form);
+                    var phone = data.get('customerPhone');
                     var xhr = new XMLHttpRequest();
                     xhr.open(form.method, form.action);
                     xhr.setRequestHeader('Accept', 'application/json');
@@ -1789,6 +1796,15 @@
                             if (xhr.status === 200) {
                                 console.log('mainForm submit: success');
                                 form.reset();
+                                // Set phone number in thank you modal
+                                var phoneDisplay = document.getElementById('submittedPhoneDisplay');
+                                if (phoneDisplay) {
+                                    phoneDisplay.textContent = phone;
+                                }
+                                var callBtn = document.getElementById('callSubmittedPhoneBtn');
+                                if (callBtn) {
+                                    callBtn.href = 'tel:' + phone;
+                                }
                                 showThankYouModal();
                             } else {
                                 console.error('mainForm submit: failed', xhr.status, xhr.responseText);
